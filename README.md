@@ -40,11 +40,9 @@ For developers not building this package from source we have a separate Installe
 2. Open a Powershell window in the root directory of your cloned repo
 3. Run CMake to generate appropriate build files, such as:
 
-    `cmake -G "Visual Studio 16 2019" .`
+    `cmake -G "Visual Studio 17 2022" .`
 
-    `cmake -G "Visual Studio 16 2019" -A Win32 .`
-
-    `cmake -G "Visual Studio 15 2017 Win64" .`
+    `cmake -G "Visual Studio 17 2022" -A Win32 .`
 
 4. (Optional) Compile the runtime using CMake. Make sure you have MS Visual Studio 2017 or 2019 with C++ support installed:
 

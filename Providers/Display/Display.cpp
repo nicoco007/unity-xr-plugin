@@ -431,19 +431,19 @@ UnitySubsystemErrorCode OpenVRDisplayProvider::GfxThread_SubmitCurrentFrame()
 	{
 		// Get recommended mirror resolution
 		UnityXRVector2 mirrorResolution = GetRecommendedMirrorResolution();
-		uint32_t nRecommendedMirrorWidth = (uint32_t )mirrorResolution.x;
-		uint32_t nRecommendedMirrorHeight = (uint32_t )mirrorResolution.y;
+		m_nRenderMirrorWidth = (uint32_t )mirrorResolution.x;
+		m_nRenderMirrorHeight = (uint32_t )mirrorResolution.y;
 
 		// Get current mirror resolution
 		uint32_t nCurrentMirrorWidth, nCurrentMirrorHeight;
 		vr::VRHeadsetView()->GetHeadsetViewSize( &nCurrentMirrorWidth, &nCurrentMirrorHeight );
 
 		// Set headset resolution if needed
-		if ( nCurrentMirrorWidth != nRecommendedMirrorWidth || nCurrentMirrorHeight != nRecommendedMirrorHeight )
+		if ( nCurrentMirrorWidth != m_nRenderMirrorWidth || nCurrentMirrorHeight != m_nRenderMirrorHeight )
 		{
-			vr::VRHeadsetView()->SetHeadsetViewSize( nRecommendedMirrorWidth, nRecommendedMirrorHeight );
+			vr::VRHeadsetView()->SetHeadsetViewSize( m_nRenderMirrorWidth, m_nRenderMirrorHeight );
 			vr::VRHeadsetView()->SetHeadsetViewCropped( true );
-			XR_TRACE( "[OpenVR] [Mirror] Setting mirror view to %ix%i\n", nRecommendedMirrorWidth, nRecommendedMirrorHeight );
+			XR_TRACE( "[OpenVR] [Mirror] Setting mirror view to %ix%i\n", m_nRenderMirrorWidth, m_nRenderMirrorHeight );
 		}
 
 		m_bIsHeadsetResolutionSet = true;
@@ -669,30 +669,6 @@ void OpenVRDisplayProvider::SetupMirror()
 	if ( m_bIsUsingCustomMirrorMode && m_nMirrorMode == kUnityXRMirrorBlitDistort )
 	{
 		m_mirrorRenderSubRect = { 0.0f, 0.0f, 1.0f, 1.0f };
-	}
-	else
-	{
-		UnityXRVector2 mirrorResolution = GetRecommendedMirrorResolution();
-		m_nRenderMirrorWidth = (uint32_t )mirrorResolution.x;
-		m_nRenderMirrorHeight = (uint32_t )mirrorResolution.y;
-
-		if ( m_nRenderMirrorWidth > 0
-			&& m_nRenderMirrorHeight > 0
-			&& m_nRenderMirrorWidth < m_nEyeWidth
-			&& m_nRenderMirrorHeight < m_nEyeHeight
-			)
-		{
-			float flRenderWidth = (float )m_nRenderMirrorWidth;
-			float flRenderHeight = (float )m_nRenderMirrorHeight;
-			float flEyeWidth = (float )m_nEyeWidth;
-			float flEyeHeight = (float )m_nEyeHeight;
-
-			float aspectRatio = flRenderWidth / flRenderHeight;
-			m_mirrorRenderSubRect.x = ( flEyeWidth - flRenderWidth ) / flEyeWidth;
-			m_mirrorRenderSubRect.y = 1.0f - ( ( flEyeHeight - flRenderHeight ) / flEyeHeight );
-			m_mirrorRenderSubRect.width = 1.0f - m_mirrorRenderSubRect.x;
-			m_mirrorRenderSubRect.height = m_mirrorRenderSubRect.width / aspectRatio;
-		}
 	}
 
 	// Do not open shared texture until we've actually sent one frame to the compositor

@@ -525,7 +525,7 @@ UnitySubsystemErrorCode OpenVRDisplayProvider::MainThread_QueryMirrorViewBlitDes
 	TryUpdateMirrorMode();
 
 	// Set mirror subrect and aspect ratio for the steamvr mirror view
-	float flSourceAspect = ( m_nEyeMirrorWidth * m_mirrorRenderSubRect.width ) / ( m_nRenderMirrorHeight * m_mirrorRenderSubRect.height );
+	float flSourceAspect = ( m_nEyeMirrorWidth * m_mirrorRenderSubRect.width ) / ( m_nEyeMirrorHeight * m_mirrorRenderSubRect.height );
 	if ( m_nMirrorMode == kUnityXRMirrorBlitDistort && m_bIsSteamVRViewAvailable && m_bIsUsingCustomMirrorMode && m_bIsHeadsetResolutionSet )
 	{
 		// Full subrect if there's a valid mirror view

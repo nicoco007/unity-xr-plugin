@@ -94,7 +94,7 @@ private:
 	void SetupMirror();
 
 	/// Tries to update the mirror mode if we haven't had a failure
-	void TryUpdateMirrorMode( bool skipResolutionCheck = false );
+	void TryUpdateMirrorMode();
 
 	/// Submit a texture to the compositor
 	/// @param[in] EVREye eEye - For which eye to process the texture

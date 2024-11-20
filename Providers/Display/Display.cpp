@@ -282,10 +282,10 @@ UnitySubsystemErrorCode OpenVRDisplayProvider::GfxThread_Start( UnityXRRendering
 	return kUnitySubsystemErrorCodeSuccess;
 }
 
-void OpenVRDisplayProvider::TryUpdateMirrorMode( bool skipResolutionCheck )
+void OpenVRDisplayProvider::TryUpdateMirrorMode()
 {
-	// Disregard mirror mode changes in the first frame
-	if ( m_bIsHeadsetResolutionSet || skipResolutionCheck )
+	// Disregard mirror mode changes in the first frame when using SteamVR view
+	if ( m_bIsHeadsetResolutionSet || m_nMirrorMode != kUnityXRMirrorBlitDistort )
 	{
 		int requestedMirrorMode = UserProjectSettings::GetUnityMirrorViewMode();
 

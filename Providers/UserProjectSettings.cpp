@@ -1,4 +1,4 @@
-﻿#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS TRUE
+#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS TRUE
 
 #include "UserProjectSettings.h"
 
@@ -27,18 +27,6 @@ typedef struct _UserDefinedSettings
 
 static UserDefinedSettings s_UserDefinedSettings;
 static bool bInitialized = false;
-
-const std::string kStereoRenderingMode = "StereoRenderingMode:";
-const std::string kInitializationType = "InitializationType:";
-const std::string kEditorAppKey = "EditorAppKey:";
-const std::string kActionManifestFilePath = "ActionManifestFileRelativeFilePath:";
-const std::string kMirrorViewMode = "MirrorView:";
-
-#ifdef __linux__
-const std::string kStreamingAssetsFilePath = "StreamingAssets/SteamVR/OpenVRSettings.asset";
-#else
-const string kStreamingAssetsFilePath = "StreamingAssets\\SteamVR\\OpenVRSettings.asset";
-#endif
 
 const string kVSDebugPath = "..\\..\\";
 
@@ -516,75 +504,4 @@ SetUserDefinedSettings( UserDefinedSettings settings )
 	}
 
 	bInitialized = true;
-}
-
-void UserProjectSettings::Initialize()
-{
-	if ( !bInitialized )
-	{
-		std::string projectDirectoryPath = GetProjectDirectoryPath( true );
-		std::string settingsPath = projectDirectoryPath + kStreamingAssetsFilePath;
-
-		bool settingsFileExists = FileExists( settingsPath );
-		std::ifstream infile;
-
-		if ( settingsFileExists )
-		{
-#ifndef __linux__
-			wstring wSettingsPath = UTF8to16( settingsPath );
-			infile.open( wSettingsPath );
-#else
-			infile.open( settingsPath );
-#endif
-
-		}
-		else
-		{
-			XR_TRACE( "[OpenVR] [ERROR] Not initialized by Unity and could not find settings file. Searched paths: \n\t'%s'\n\t'%s'\n",
-				( projectDirectoryPath + kStreamingAssetsFilePath ).c_str(), settingsPath.c_str() );
-		}
-
-		UserDefinedSettings settings;
-
-		std::string line;
-		if ( infile.is_open() )
-		{
-			while ( getline( infile, line ) )
-			{
-				std::string lineValue;
-
-				if ( FindSettingAndGetValue( line, kStereoRenderingMode, lineValue ) )
-				{
-					settings.stereoRenderingMode = ( unsigned short )std::stoi( lineValue );
-				}
-				else if ( FindSettingAndGetValue( line, kInitializationType, lineValue ) )
-				{
-					settings.initializationType = ( unsigned short )std::stoi( lineValue );
-				}
-				else if ( FindSettingAndGetValue( line, kMirrorViewMode, lineValue ) )
-				{
-					settings.mirrorViewMode = ( unsigned short )std::stoi( lineValue );
-				}
-				/*else if ( FindSettingAndGetValue( line, kEditorAppKey, lineValue ) ) //only for in editor
-				{
-					Trim( lineValue );
-					char editorAppKey[MAX_PATH];
-					strcpy(editorAppKey, lineValue.c_str());
-					settings.editorAppKey = editorAppKey;
-				}*/
-				else if ( FindSettingAndGetValue( line, kActionManifestFilePath, lineValue ) )
-				{
-					Trim( lineValue );
-					lineValue = projectDirectoryPath + lineValue;
-
-					char actionManifestPath[MAX_PATH];
-					strcpy_s( actionManifestPath, lineValue.c_str() );
-					settings.actionManifestPath = actionManifestPath;
-				}
-			}
-			infile.close();
-		}
-
-		SetUserDefinedSettings( settings );
-	}
 }

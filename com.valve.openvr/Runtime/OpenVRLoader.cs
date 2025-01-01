@@ -152,9 +152,7 @@ namespace Unity.XR.OpenVR
             //InputLayoutLoader.RegisterInputLayouts();
 #endif
 
-
-//this only works at the right time in editor. In builds we use a different method (reading the asset manually)
-#if UNITY_EDITOR
+            // SetUserDefinedSettings must be called before display subsystem init
             OpenVRSettings settings = OpenVRSettings.GetSettings();
             if (settings != null)
             {
@@ -170,21 +168,22 @@ namespace Unity.XR.OpenVR
                 userDefinedSettings.editorAppKey = null;
                 userDefinedSettings.mirrorViewMode = (ushort)settings.GetMirrorViewMode();
 
+#if UNITY_EDITOR
+                userDefinedSettings.applicationName = string.Format("[Testing] {0}", GetEscapedApplicationName());
                 userDefinedSettings.editorAppKey = settings.EditorAppKey; //only set the key if we're in the editor. Otherwise let steamvr set the key.
-
+#else
                 if (OpenVRHelpers.IsUsingSteamVRInput())
                 {
                     userDefinedSettings.editorAppKey = OpenVRHelpers.GetEditorAppKeyFromPlugin();
                 }
+#endif
 
-                userDefinedSettings.applicationName = string.Format("[Testing] {0}", GetEscapedApplicationName());
                 settings.InitializeActionManifestFileRelativeFilePath();
 
                 userDefinedSettings.actionManifestPath = settings.ActionManifestFileRelativeFilePath;
 
                 SetUserDefinedSettings(userDefinedSettings); 
             }
-#endif
             
             CreateSubsystem<XRDisplaySubsystemDescriptor, XRDisplaySubsystem>(s_DisplaySubsystemDescriptors, "OpenVR Display");
 

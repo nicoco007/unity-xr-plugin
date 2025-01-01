@@ -11,13 +11,6 @@ OpenVRSystem::OpenVRSystem() :
 	initError( vr::VRInitError_None ),
 	tickCallback( nullptr )
 {
-	XR_TRACE( ( "[OpenVR] static Initialize: " + UserProjectSettings::GetEditorAppKey() + "\n" ).c_str() );
-
-	if ( UserProjectSettings::GetEditorAppKey().empty() )
-	{
-		//if we're not coming from an editor then we need to initialize immediately. This seems like a bug that unity should fix. (keithb 1/28/2020)
-		Initialize();
-	}
 }
 
 OpenVRSystem::~OpenVRSystem()
@@ -38,7 +31,6 @@ bool OpenVRSystem::Initialize()
 
 		initError = vr::VRInitError_None;
 
-		UserProjectSettings::Initialize();
 		std::string startupInfo = UserProjectSettings::GetInitStartupInfo();
 
 		vr::IVRSystem *vrSystem;

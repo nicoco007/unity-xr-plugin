@@ -62,6 +62,7 @@ public:
 	static std::string GetInitStartupInfo();
 	static EVRMirrorViewMode GetMirrorViewMode();
 	static int GetUnityMirrorViewMode();
+	static UnityXRDepthTextureFormat GetUnityDepthTextureFormat();
 	static std::string GetProjectDirectoryPath( bool bAddDataDirectory );
 	static std::string GetCurrentWorkingPath();
 	static bool FileExists( const std::string &fileName );

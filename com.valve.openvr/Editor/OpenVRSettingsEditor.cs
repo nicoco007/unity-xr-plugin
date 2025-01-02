@@ -27,6 +27,12 @@ namespace Unity.XR.OpenVR.Editor
 
         private SerializedProperty m_MirrorViewMode;
 
+        private const string kDepthSubmissionModeKey = "DepthSubmissionMode";
+
+        static GUIContent s_DepthSubmissionMode = EditorGUIUtility.TrTextContent("Depth Submission Mode");
+
+        private SerializedProperty m_DepthSubmissionMode;
+
         public GUIContent WindowsTab;
         private int tab = 0;
 
@@ -76,6 +82,10 @@ namespace Unity.XR.OpenVR.Editor
             {
                 m_MirrorViewMode = serializedObject.FindProperty(kMirrorViewModeKey);
             }
+            if (m_DepthSubmissionMode == null)
+            {
+                m_DepthSubmissionMode = serializedObject.FindProperty(kDepthSubmissionModeKey);
+            }
 
             serializedObject.Update();
 
@@ -92,6 +102,7 @@ namespace Unity.XR.OpenVR.Editor
 
                 EditorGUILayout.PropertyField(m_StereoRenderingMode, s_StereoRenderingMode);
                 EditorGUILayout.PropertyField(m_MirrorViewMode, s_MirrorViewMode);
+                EditorGUILayout.PropertyField(m_DepthSubmissionMode, s_DepthSubmissionMode);
             }
             EditorGUILayout.EndVertical();
 

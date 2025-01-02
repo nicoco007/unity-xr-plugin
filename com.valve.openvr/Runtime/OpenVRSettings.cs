@@ -38,6 +38,13 @@ namespace Unity.XR.OpenVR
             OpenVR,
         }
 
+        public enum DepthSubmissionModes
+        {
+            None,
+            Depth16Bit,
+            Depth24Bit
+        }
+
         [SerializeField, Tooltip("This will check the package version and the latest on github and prompt you to upgrade once per project load.")]
         public bool PromptToUpgradePackage = true;
 
@@ -61,6 +68,9 @@ namespace Unity.XR.OpenVR
 
         [SerializeField, Tooltip("Which eye to use when rendering the headset view to the main window (none, left, right, or a composite of both + OpenVR overlays)")]
         public MirrorViewModes MirrorView = MirrorViewModes.Right;
+
+        [SerializeField]
+        public DepthSubmissionModes DepthSubmissionMode = DepthSubmissionModes.Depth24Bit;
 
         public const string StreamingAssetsFolderName = "SteamVR";
         public const string ActionManifestFileName = "legacy_manifest.json";
@@ -87,21 +97,6 @@ namespace Unity.XR.OpenVR
 
         [SerializeField, Tooltip("Internal value that tells the system if we have copied the default binding files yet.")]
         public bool HasCopiedDefaults = false;
-
-        public ushort GetStereoRenderingMode()
-        {
-            return (ushort)StereoRenderingMode;
-        }
-
-        public ushort GetInitializationType()
-        {
-            return (ushort)InitializationType;
-        }
-
-        public MirrorViewModes GetMirrorViewMode()
-        {
-            return MirrorView;
-        }
 
         /// <summary>
         /// Sets the mirror view mode (left, right, composite of both + openvr overlays) at runtime.

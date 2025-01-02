@@ -1,4 +1,4 @@
-#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS TRUE
+﻿#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS TRUE
 
 #include "UserProjectSettings.h"
 
@@ -20,6 +20,7 @@ typedef struct _UserDefinedSettings
 	unsigned short stereoRenderingMode = 0;
 	unsigned short initializationType = 0;
 	unsigned short mirrorViewMode = 0;
+	unsigned short depthSubmissionMode = 2;
 	const char *editorAppKey = "";
 	const char *actionManifestPath = "";
 	const char *applicationName = "";
@@ -335,6 +336,22 @@ int UserProjectSettings::GetUnityMirrorViewMode()
 	return unityMode;
 }
 
+UnityXRDepthTextureFormat UserProjectSettings::GetUnityDepthTextureFormat()
+{
+	switch (s_UserDefinedSettings.depthSubmissionMode)
+	{
+	case 0:
+		return kUnityXRDepthTextureFormatNone;
+
+	case 1:
+		return kUnityXRDepthTextureFormat16bit;
+
+	case 2:
+	default:
+		return kUnityXRDepthTextureFormat24bitOrGreater;
+	}
+}
+
 const char *GetStereoRenderingModeString( unsigned short nStereoRenderingMode )
 {
 	switch ( nStereoRenderingMode )
@@ -440,10 +457,13 @@ SetUserDefinedSettings( UserDefinedSettings settings )
 		GetInitializationTypeString( settings.initializationType ) );
 	XR_TRACE( "\tMirror View Mode : %s\n",
 		GetMirrorViewModeString( settings.mirrorViewMode ) );
+	XR_TRACE( "\tDepth Submission Mode : %s\n",
+		GetMirrorViewModeString( settings.depthSubmissionMode ) );
 
 	s_UserDefinedSettings.stereoRenderingMode = settings.stereoRenderingMode;
 	s_UserDefinedSettings.initializationType = settings.initializationType;
 	s_UserDefinedSettings.mirrorViewMode = settings.mirrorViewMode;
+	s_UserDefinedSettings.depthSubmissionMode = settings.depthSubmissionMode;
 
 	if ( settings.editorAppKey && strlen( settings.editorAppKey ) > 1 )
 	{

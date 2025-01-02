@@ -1073,9 +1073,9 @@ UnitySubsystemErrorCode OpenVRDisplayProvider::CreateEyeTextures( const UnityXRF
 			UnityXRRenderTextureDesc unityDesc;
 			memset( &unityDesc, 0, sizeof( UnityXRRenderTextureDesc ) );
 			unityDesc.colorFormat = kUnityXRRenderTextureFormatRGBA32;
-			unityDesc.depthFormat = kUnityXRDepthTextureFormat24bitOrGreater;
+			unityDesc.depthFormat = UserProjectSettings::GetUnityDepthTextureFormat();
 			unityDesc.color.nativePtr = (void * )kUnityXRRenderTextureIdDontCare;
-			unityDesc.depth.nativePtr = (void * )kUnityXRRenderTextureIdDontCare;
+			unityDesc.depth.nativePtr = unityDesc.depthFormat != kUnityXRDepthTextureFormatNone ? (void * )kUnityXRRenderTextureIdDontCare : nullptr;
 			unityDesc.width = eyeWidth;
 			unityDesc.height = eyeHeight;
 

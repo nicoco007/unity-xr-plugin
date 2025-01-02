@@ -162,11 +162,12 @@ namespace Unity.XR.OpenVR
                 }
 
                 UserDefinedSettings userDefinedSettings;
-                userDefinedSettings.stereoRenderingMode = (ushort)settings.GetStereoRenderingMode();
-                userDefinedSettings.initializationType = (ushort)settings.GetInitializationType();
+                userDefinedSettings.stereoRenderingMode = (ushort)settings.StereoRenderingMode;
+                userDefinedSettings.initializationType = (ushort)settings.InitializationType;
                 userDefinedSettings.applicationName = null;
                 userDefinedSettings.editorAppKey = null;
-                userDefinedSettings.mirrorViewMode = (ushort)settings.GetMirrorViewMode();
+                userDefinedSettings.mirrorViewMode = (ushort)settings.MirrorView;
+                userDefinedSettings.depthSubmissionMode = (ushort)settings.DepthSubmissionMode;
 
 #if UNITY_EDITOR
                 userDefinedSettings.applicationName = string.Format("[Testing] {0}", GetEscapedApplicationName());
@@ -416,6 +417,7 @@ namespace Unity.XR.OpenVR
             public ushort stereoRenderingMode;
             public ushort initializationType;
             public ushort mirrorViewMode;
+	        public ushort depthSubmissionMode;
             [MarshalAs(UnmanagedType.LPStr)] public string editorAppKey;
             [MarshalAs(UnmanagedType.LPStr)] public string actionManifestPath;
             [MarshalAs(UnmanagedType.LPStr)] public string applicationName;
